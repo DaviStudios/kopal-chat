@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Messaging App</title>
+</head>
+<body>
+    <h1>Simple Messaging App</h1>
+    <div id="chat">
+        <div id="messages"></div>
+        <input type="text" id="message" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        const socket = new WebSocket("ws://your-server-address:your-port");
+
+        socket.onopen = (event) => {
+            console.log("WebSocket connection opened.");
+        };
+
+        socket.onmessage = (event) => {
+            const messagesDiv = document.getElementById("messages");
+            const message = document.createElement("div");
+            message.textContent = event.data;
+            messagesDiv.appendChild(message);
+        };
+
+        socket.onclose = (event) => {
+            console.log("WebSocket connection closed.");
+        };
+
+        function sendMessage() {
+            const messageInput = document.getElementById("message");
+            const message = messageInput.value;
+            socket.send(message);
+            messageInput.value = "";
+        }
+    </script>
+</body>
+</html>
