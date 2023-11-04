@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Form</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('discord-avatar-1024-Q8QG0.png');
+            background-size: 50vh;
+        }
+        #order-form {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: transparent;
+            border: none;
+            color: #fff;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form id="order-form">
+        <h1>Order Form</h1>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email">
+        <br>
+        <label for="plan">Plan:</label>
+        <input type="text" id="plan" name="plan">
+        <br>
+        <label for="commands">Number of commands:</label>
+        <input type="text" id="commands" name="commands">
+        <br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+        <br>
+        <label for "description">Description:</label>
+        <input type="text" id="description" name="description">
+        <br>
+        <label for="coded-in">Coded in:</label>
+        <input type="text" id="coded-in" name="coded-in">
+        <br>
+        <label for="discord-user">Discord user:</label>
+        <input type="text" id="discord-user" name="discord-user">
+        <br>
+        <button type="button" id="order-button">Order</button>
+    </form>
+
+    <script>
+        const orderButton = document.getElementById("order-button");
+        const form = document.getElementById("order-form");
+        const webhookURL = "https://discord.com/api/webhooks/1170243630456381482/-K_NuVaVFM04Bc_7kiD0xWgTcE0oBrVIyc-H_SLDM-xPszxCjWmpW55J-fMPLCNYUB1Y";
+
+        orderButton.addEventListener("click", () => {
+            const formData = new FormData(form);
+            const formDataObject = {};
+            formData.forEach((value, key) => {
+                formDataObject[key] = value;
+            });
+
+            // Send data to the webhook
+            fetch(webhookURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ content: JSON.stringify(formDataObject) })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Order submitted successfully!");
+                } else {
+                    alert("Order submission failed. Please check your input and try again.");
+                }
+            })
+            .catch(error => {
+                alert("Error: " + error);
+            });
+        });
+    </script>
+</body>
+</html>
